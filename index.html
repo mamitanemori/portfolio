@@ -13,7 +13,6 @@
 
     :root {
       --bg:          #faf9f7;
-      --bg2:         #f3f2ef;
       --bg-white:    #ffffff;
       --accent:      #c8a882;
       --text:        #1a1917;
@@ -37,9 +36,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── FONTS ─── */
-    .font-display { font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; }
-    .font-ui      { font-family: "DM Mono", monospace; }
+    /* ─── FOCUS ─── */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
 
     /* ─── EYEBROW ─── */
     .eyebrow {
@@ -338,7 +339,6 @@
       padding-top: 56px;
       margin-top: 56px;
     }
-    .stat-item {}
     .stat-num {
       font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
       font-size: 2rem;
@@ -395,7 +395,7 @@
       padding: 20px 0;
       border-bottom: 1px solid var(--inv-border);
       text-decoration: none;
-      transition: all 0.2s;
+      transition: color 0.2s, border-color 0.2s;
     }
     .contact-link:first-child { border-top: 1px solid var(--inv-border); }
     .contact-link-address {
@@ -545,7 +545,7 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav aria-label="Main navigation">
   <a href="/" class="nav-logo">Portfolio</a>
   <div class="nav-links">
     <a href="#works">Works</a>
@@ -553,6 +553,8 @@
     <a href="#contact">Contact</a>
   </div>
 </nav>
+
+<main>
 
 <!-- HERO -->
 <section class="hero">
@@ -583,19 +585,19 @@
 
   <div class="filter-bar-wrap">
     <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="line">LINE</button>
-      <button class="filter-btn" data-filter="web">Web</button>
-      <button class="filter-btn" data-filter="lp">LP</button>
-      <button class="filter-btn" data-filter="portfolio">Portfolio</button>
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="line" aria-pressed="false">LINE</button>
+      <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
+      <button class="filter-btn" data-filter="lp" aria-pressed="false">LP</button>
+      <button class="filter-btn" data-filter="portfolio" aria-pressed="false">Portfolio</button>
     </div>
   </div>
 
   <div class="works-grid" id="works-grid">
 
-    <div class="work-item" data-category="line" onclick="openModal('line')">
+    <div class="work-item" data-category="line" data-modal="line" tabindex="0" role="button" aria-label="LINE事業者構築の詳細を見る">
       <div class="work-thumb">
-        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築" loading="lazy">
+        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築" loading="eager" decoding="async">
       </div>
       <div class="work-info">
         <span class="work-title">LINE事業者構築</span>
@@ -603,7 +605,7 @@
       </div>
     </div>
 
-    <div class="work-item" data-category="web" onclick="openModal('coaching')">
+    <div class="work-item" data-category="web" data-modal="coaching" tabindex="0" role="button" aria-label="コーチング HP制作の詳細を見る">
       <div class="work-thumb">
         <img src="images/02_HP制作実績_コーチング.png" alt="コーチング HP制作" loading="lazy">
       </div>
@@ -613,7 +615,7 @@
       </div>
     </div>
 
-    <div class="work-item" data-category="lp" onclick="openModal('lp')">
+    <div class="work-item" data-category="lp" data-modal="lp" tabindex="0" role="button" aria-label="LP制作の詳細を見る">
       <div class="work-thumb">
         <img src="images/03_LP制作実績.png" alt="LP制作" loading="lazy">
       </div>
@@ -623,7 +625,7 @@
       </div>
     </div>
 
-    <div class="work-item" data-category="web" onclick="openModal('cafe')">
+    <div class="work-item" data-category="web" data-modal="cafe" tabindex="0" role="button" aria-label="カフェ HP制作の詳細を見る">
       <div class="work-thumb">
         <img src="images/04_HP制作実績_カフェ.png" alt="カフェ HP制作" loading="lazy">
       </div>
@@ -633,7 +635,7 @@
       </div>
     </div>
 
-    <div class="work-item" data-category="portfolio" onclick="openModal('portfolio')">
+    <div class="work-item" data-category="portfolio" data-modal="portfolio" tabindex="0" role="button" aria-label="ポートフォリオサイトの詳細を見る">
       <div class="work-thumb">
         <img src="images/05_PORTFOLIO.png" alt="ポートフォリオサイト" loading="lazy">
       </div>
@@ -696,6 +698,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer>
   <span>© 2025 Portfolio</span>
@@ -703,8 +707,8 @@
 </footer>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
-  <button class="modal-close" onclick="closeModal()">Close ×</button>
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="handleOverlayClick(event)">
+  <button class="modal-close" onclick="closeModal()" aria-label="閉じる">Close ×</button>
   <div class="modal-inner" id="modal-inner"></div>
 </div>
 
@@ -752,13 +756,18 @@
     }
   };
 
-  function openModal(key) {
+  let lastFocused = null;
+
+  function openModal(key, triggerEl) {
     const p = projects[key];
     if (!p) return;
-    document.getElementById('modal-inner').innerHTML = `
+    lastFocused = triggerEl || document.activeElement;
+
+    const inner = document.getElementById('modal-inner');
+    inner.innerHTML = `
       <img src="${p.img}" alt="${p.title}" class="modal-img">
       <div class="modal-header">
-        <h2 class="modal-title">${p.title}</h2>
+        <h2 class="modal-title" id="modal-title">${p.title}</h2>
         <div class="modal-meta">
           <div class="modal-meta-row">
             <span class="modal-meta-key">Category</span>
@@ -776,13 +785,16 @@
       </div>
       <p class="modal-desc">${p.desc}</p>
     `;
-    document.getElementById('modal-overlay').classList.add('open');
+    const overlay = document.getElementById('modal-overlay');
+    overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.querySelector('.modal-close').focus();
   }
 
   function closeModal() {
     document.getElementById('modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
   }
 
   function handleOverlayClick(e) {
@@ -793,11 +805,26 @@
     if (e.key === 'Escape') closeModal();
   });
 
+  // Work items — click + keyboard
+  document.querySelectorAll('.work-item').forEach(item => {
+    item.addEventListener('click', () => openModal(item.dataset.modal, item));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(item.dataset.modal, item);
+      }
+    });
+  });
+
   // Filter
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       const filter = btn.dataset.filter;
       let visible = 0;
       document.querySelectorAll('.work-item').forEach(item => {
