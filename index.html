@@ -7,6 +7,8 @@
   <meta name="description" content="Claude Codeを活用したウェブ制作・LINE構築の実績集">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Preload the Google Fonts stylesheet to unblock render sooner -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=DM+Mono:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=DM+Mono:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -597,7 +599,7 @@
 
     <div class="work-item" data-category="line" data-modal="line" tabindex="0" role="button" aria-label="LINE事業者構築の詳細を見る">
       <div class="work-thumb">
-        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築" loading="eager" decoding="async">
+        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築" loading="eager" decoding="async" fetchpriority="high">
       </div>
       <div class="work-info">
         <span class="work-title">LINE事業者構築</span>
@@ -713,90 +715,192 @@
 </div>
 
 <script>
-  const projects = {
+  // ─── 型定義 (JSDoc) ────────────────────────────────────────────────────────
+  /**
+   * @typedef {Object} Project
+   * @property {string} img      - 画像パス
+   * @property {string} title    - 案件名
+   * @property {string} category - カテゴリ
+   * @property {string} year     - 制作年
+   * @property {string} tech     - 使用技術
+   * @property {string} desc     - 説明文
+   */
+
+  // ─── 定数 ─────────────────────────────────────────────────────────────────
+  /** @type {Record<string, Project>} */
+  const PROJECTS = {
     line: {
-      img: 'images/01_LINE構築実績.png',
-      title: 'LINE事業者構築',
+      img:      'images/01_LINE構築実績.png',
+      title:    'LINE事業者構築',
       category: 'LINE',
-      year: '2025',
-      tech: 'Claude Code / LINE Messaging API',
-      desc: 'Claude Codeを活用してLINE公式アカウントのリッチメニュー設計・自動応答フロー・Webhook連携を構築。企業のLINE運用基盤を短期間で立ち上げました。'
+      year:     '2025',
+      tech:     'Claude Code / LINE Messaging API',
+      desc:     'Claude Codeを活用してLINE公式アカウントのリッチメニュー設計・自動応答フロー・Webhook連携を構築。企業のLINE運用基盤を短期間で立ち上げました。',
     },
     coaching: {
-      img: 'images/02_HP制作実績_コーチング.png',
-      title: 'コーチング HP制作',
+      img:      'images/02_HP制作実績_コーチング.png',
+      title:    'コーチング HP制作',
       category: 'Web',
-      year: '2025',
-      tech: 'Claude Code / HTML / CSS',
-      desc: 'コーチングサービスの集客に特化したホームページ。ファーストビューからCVまでの導線設計をAIと協働で最適化し、モバイルファーストで制作しました。'
+      year:     '2025',
+      tech:     'Claude Code / HTML / CSS',
+      desc:     'コーチングサービスの集客に特化したホームページ。ファーストビューからCVまでの導線設計をAIと協働で最適化し、モバイルファーストで制作しました。',
     },
     lp: {
-      img: 'images/03_LP制作実績.png',
-      title: 'LP制作',
+      img:      'images/03_LP制作実績.png',
+      title:    'LP制作',
       category: 'LP',
-      year: '2025',
-      tech: 'Claude Code / HTML / CSS',
-      desc: '単一スクロールで完結するランディングページ。コンバージョンを意識したコピーとレイアウトをClaude Codeで高速に実装しました。'
+      year:     '2025',
+      tech:     'Claude Code / HTML / CSS',
+      desc:     '単一スクロールで完結するランディングページ。コンバージョンを意識したコピーとレイアウトをClaude Codeで高速に実装しました。',
     },
     cafe: {
-      img: 'images/04_HP制作実績_カフェ.png',
-      title: 'カフェ HP制作',
+      img:      'images/04_HP制作実績_カフェ.png',
+      title:    'カフェ HP制作',
       category: 'Web',
-      year: '2025',
-      tech: 'Claude Code / HTML / CSS',
-      desc: 'カフェの雰囲気と世界観を大切にした店舗ホームページ。メニュー・アクセス・予約情報を温かみのあるデザインで構成しました。'
+      year:     '2025',
+      tech:     'Claude Code / HTML / CSS',
+      desc:     'カフェの雰囲気と世界観を大切にした店舗ホームページ。メニュー・アクセス・予約情報を温かみのあるデザインで構成しました。',
     },
     portfolio: {
-      img: 'images/05_PORTFOLIO.png',
-      title: 'ポートフォリオサイト',
+      img:      'images/05_PORTFOLIO.png',
+      title:    'ポートフォリオサイト',
       category: 'Portfolio',
-      year: '2025',
-      tech: 'Claude Code / HTML / CSS',
-      desc: 'このポートフォリオサイト自体もClaude Codeで制作。デザインシステムYAMLを定義し、エージェントが実装する新しいワークフローを実践しました。'
-    }
+      year:     '2025',
+      tech:     'Claude Code / HTML / CSS',
+      desc:     'このポートフォリオサイト自体もClaude Codeで制作。デザインシステムYAMLを定義し、エージェントが実装する新しいワークフローを実践しました。',
+    },
   };
 
-  let lastFocused = null;
+  // ─── セキュリティ: XSS対策ユーティリティ ─────────────────────────────────
+  /**
+   * 文字列をテキストノードとして安全に設定する
+   * innerHTML への直接挿入を禁止し、必ずこの関数を経由させる
+   * @param {HTMLElement} el
+   * @param {string} text
+   */
+  function setText(el, text) {
+    el.textContent = text;
+  }
 
+  /**
+   * 属性値を安全にセットする (setAttribute は自動エスケープ済み)
+   * @param {HTMLElement} el
+   * @param {string} attr
+   * @param {string} value
+   */
+  function setAttr(el, attr, value) {
+    el.setAttribute(attr, value);
+  }
+
+  // ─── DOM構築: モーダルコンテンツ (単一責任) ──────────────────────────────
+  /**
+   * Project データから モーダル内 DOM ツリーを安全に構築して返す
+   * innerHTML を一切使わず createElement + textContent/setAttribute のみ使用
+   * @param {Project} p
+   * @returns {DocumentFragment}
+   */
+  function buildModalDOM(p) {
+    const frag = document.createDocumentFragment();
+
+    const img = document.createElement('img');
+    setAttr(img, 'src', p.img);
+    setAttr(img, 'alt', p.title);
+    setAttr(img, 'class', 'modal-img');
+    frag.appendChild(img);
+
+    const header = document.createElement('div');
+    setAttr(header, 'class', 'modal-header');
+
+    const h2 = document.createElement('h2');
+    setAttr(h2, 'class', 'modal-title');
+    setAttr(h2, 'id', 'modal-title');
+    setText(h2, p.title);
+    header.appendChild(h2);
+
+    const meta = document.createElement('div');
+    setAttr(meta, 'class', 'modal-meta');
+
+    /** @type {Array<[string, string]>} */
+    const metaRows = [
+      ['Category', p.category],
+      ['Year',     p.year],
+      ['Tech',     p.tech],
+    ];
+    metaRows.forEach(([key, val]) => {
+      const row  = document.createElement('div');
+      setAttr(row, 'class', 'modal-meta-row');
+      const keyEl = document.createElement('span');
+      setAttr(keyEl, 'class', 'modal-meta-key');
+      setText(keyEl, key);
+      const valEl = document.createElement('span');
+      setAttr(valEl, 'class', 'modal-meta-val');
+      setText(valEl, val);
+      row.appendChild(keyEl);
+      row.appendChild(valEl);
+      meta.appendChild(row);
+    });
+
+    header.appendChild(meta);
+    frag.appendChild(header);
+
+    const desc = document.createElement('p');
+    setAttr(desc, 'class', 'modal-desc');
+    setText(desc, p.desc);
+    frag.appendChild(desc);
+
+    return frag;
+  }
+
+  // ─── モーダル状態管理 (単一責任) ─────────────────────────────────────────
+  /** @type {Element|null} */
+  let _lastFocused = null;
+
+  /**
+   * モーダルの表示/非表示とスクロールロックを制御する
+   * @param {boolean} open
+   */
+  function setModalVisibility(open) {
+    const overlay = document.getElementById('modal-overlay');
+    overlay.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  /**
+   * フォーカスをモーダル開閉に合わせて移動する
+   * @param {boolean} open
+   * @param {Element|null} [triggerEl]
+   */
+  function manageFocus(open, triggerEl) {
+    if (open) {
+      _lastFocused = triggerEl || document.activeElement;
+      document.querySelector('.modal-close')?.focus();
+    } else {
+      if (_lastFocused instanceof HTMLElement) _lastFocused.focus();
+      _lastFocused = null;
+    }
+  }
+
+  // ─── 公開API ──────────────────────────────────────────────────────────────
+  /**
+   * @param {string} key       - PROJECTS のキー
+   * @param {Element|null} triggerEl - モーダルを開いた要素（閉時にフォーカス戻し用）
+   */
   function openModal(key, triggerEl) {
-    const p = projects[key];
-    if (!p) return;
-    lastFocused = triggerEl || document.activeElement;
+    const project = PROJECTS[key];
+    if (!project) return;
 
     const inner = document.getElementById('modal-inner');
-    inner.innerHTML = `
-      <img src="${p.img}" alt="${p.title}" class="modal-img">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-title">${p.title}</h2>
-        <div class="modal-meta">
-          <div class="modal-meta-row">
-            <span class="modal-meta-key">Category</span>
-            <span class="modal-meta-val">${p.category}</span>
-          </div>
-          <div class="modal-meta-row">
-            <span class="modal-meta-key">Year</span>
-            <span class="modal-meta-val">${p.year}</span>
-          </div>
-          <div class="modal-meta-row">
-            <span class="modal-meta-key">Tech</span>
-            <span class="modal-meta-val">${p.tech}</span>
-          </div>
-        </div>
-      </div>
-      <p class="modal-desc">${p.desc}</p>
-    `;
-    const overlay = document.getElementById('modal-overlay');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    document.querySelector('.modal-close').focus();
+    inner.replaceChildren(buildModalDOM(project));
+    setModalVisibility(true);
+    manageFocus(true, triggerEl);
   }
 
   function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-    if (lastFocused) lastFocused.focus();
+    setModalVisibility(false);
+    manageFocus(false);
   }
 
+  // ─── イベントバインド ─────────────────────────────────────────────────────
   function handleOverlayClick(e) {
     if (e.target === e.currentTarget) closeModal();
   }
@@ -805,7 +909,6 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  // Work items — click + keyboard
   document.querySelectorAll('.work-item').forEach(item => {
     item.addEventListener('click', () => openModal(item.dataset.modal, item));
     item.addEventListener('keydown', e => {
@@ -816,7 +919,6 @@
     });
   });
 
-  // Filter
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => {
@@ -825,6 +927,7 @@
       });
       btn.classList.add('active');
       btn.setAttribute('aria-pressed', 'true');
+
       const filter = btn.dataset.filter;
       let visible = 0;
       document.querySelectorAll('.work-item').forEach(item => {
@@ -832,7 +935,8 @@
         item.classList.toggle('hidden', !match);
         if (match) visible++;
       });
-      document.getElementById('works-count').textContent = `${visible} project${visible !== 1 ? 's' : ''}`;
+      document.getElementById('works-count').textContent =
+        `${visible} project${visible !== 1 ? 's' : ''}`;
     });
   });
 </script>
