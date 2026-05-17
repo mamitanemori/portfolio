@@ -3,48 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio — AI × Web Development</title>
-  <meta name="description" content="Claude Codeを活用したウェブ制作・LINE構築の実績集">
+  <!-- SEO: 具体的なタイトルとdescription -->
+  <title>Portfolio — AI × Web Development | Claude Code 活用実績</title>
+  <meta name="description" content="Claude Code を活用したウェブ制作・LINE構築の実績集。コーチングHP・カフェHP・LP制作・LINE事業者構築など。">
+  <!-- OGP -->
+  <meta property="og:title" content="Portfolio — AI × Web Development">
+  <meta property="og:description" content="Claude Code を活用したウェブ制作・LINE構築の実績集">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts: design-system.yaml 準拠 (Shippori Mincho / DM Mono / Noto Sans JP) -->
+  <!-- preload は削除し stylesheet 単一化（二重リクエスト防止） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Preload the Google Fonts stylesheet to unblock render sooner -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=DM+Mono:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=DM+Mono:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=DM+Mono:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap"
+    rel="stylesheet">
 
+  <style>
+    /* ─── RESET ─────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; }
+
+    /* ─── DESIGN TOKENS (design-system.yaml) ──────────────────────────────── */
     :root {
-      --bg:          #faf9f7;
-      --bg-white:    #ffffff;
-      --accent:      #c8a882;
-      --text:        #1a1917;
-      --muted:       #999896;
-      --border:      #e8e6e1;
-      --contact-bg:  #1a1917;
-      --inv:         rgba(255,255,255,0.92);
-      --inv-muted:   rgba(255,255,255,0.5);
-      --inv-border:  rgba(255,255,255,0.08);
+      /* Colors */
+      --bg:          #faf9f7;   /* background.primary */
+      --bg-2:        #f3f2ef;   /* background.secondary */
+      --bg-white:    #ffffff;   /* background.white */
+      --accent:      #c8a882;   /* accent.base — eyebrow / section-label / filter-active */
+      --text:        #1a1917;   /* text.primary */
+      --muted:       #999896;   /* text.muted */
+      --border:      #e8e6e1;   /* border.default */
+      --border-soft: #f3f2ef;   /* border.soft */
+      --contact-bg:  #1a1917;   /* contact_bg */
+      --inv:         rgba(255,255,255,0.92);  /* text.inverse */
+      --inv-muted:   rgba(255,255,255,0.5);   /* text.inverse_muted */
+      --inv-border:  rgba(255,255,255,0.08);  /* border.inverse */
+
+      /* Typography */
+      --font-display: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+      --font-ui:      "DM Mono", monospace;
+      --font-body:    "Noto Sans JP", system-ui, sans-serif;
+
+      /* Layout */
+      --max-w:    1080px;
+      --pad-x:    40px;
+      --section-y: 90px;
     }
 
+    /* ─── BASE ───────────────────────────────────────────────────────────────── */
     html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: "Noto Sans JP", system-ui, sans-serif;
+      font-family: var(--font-body);
       font-size: 14px;
       font-weight: 300;
       line-height: 2.1;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── FOCUS ─── */
+    /* ─── FOCUS (アクセシビリティ) ──────────────────────────────────────────── */
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
 
-    /* ─── EYEBROW ─── */
+    /* ─── EYEBROW (hero eyebrow / about sidebar) ─────────────────────────── */
     .eyebrow {
       display: flex;
       align-items: center;
@@ -60,30 +87,31 @@
       flex-shrink: 0;
     }
     .eyebrow-label {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
-    /* ─── NAV ─── */
-    nav {
+    /* ─── NAV ────────────────────────────────────────────────────────────── */
+    .site-nav {
       position: sticky;
       top: 0;
       height: 52px;
-      background: rgba(250, 249, 247, 0.88);
+      background: rgba(250,249,247,0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      padding: 0 var(--pad-x);
       z-index: 100;
     }
     .nav-logo {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 11px;
       font-weight: 400;
       letter-spacing: 0.12em;
@@ -95,10 +123,12 @@
       display: flex;
       align-items: center;
       gap: 32px;
+      list-style: none;
     }
     .nav-links a {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--muted);
@@ -107,15 +137,15 @@
     }
     .nav-links a:hover { color: var(--text); }
 
-    /* ─── HERO ─── */
+    /* ─── HERO ───────────────────────────────────────────────────────────── */
     .hero {
-      max-width: 1080px;
+      max-width: var(--max-w);
       margin: 0 auto;
-      padding: 140px 40px 100px;
+      padding: 140px var(--pad-x) 100px;
       border-bottom: 1px solid var(--border);
     }
     .hero h1 {
-      font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+      font-family: var(--font-display);
       font-size: clamp(3rem, 8vw, 6.5rem);
       font-weight: 400;
       line-height: 1.15;
@@ -131,85 +161,88 @@
       gap: 24px;
     }
     .hero-desc {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--muted);
       line-height: 1.8;
     }
-    .hero-cta {
-      display: flex;
+
+    /* CTA Arrow (design-system.yaml: cta_arrow) */
+    .cta-arrow {
+      display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 11px;
+      font-weight: 400;
       letter-spacing: 0.08em;
       color: var(--text);
       text-decoration: none;
-      cursor: pointer;
-      border: none;
       background: none;
+      border: none;
       padding: 0;
     }
-    .hero-cta .cta-line {
+    .cta-arrow__line {
       width: 32px;
       height: 1px;
-      background: var(--text);
+      background: currentColor;
       position: relative;
       transition: width 0.25s ease;
+      flex-shrink: 0;
     }
-    .hero-cta .cta-line::after {
+    .cta-arrow__line::after {
       content: "";
       position: absolute;
-      right: 0;
-      top: -3px;
-      width: 6px;
-      height: 6px;
-      border-right: 1px solid var(--text);
-      border-top: 1px solid var(--text);
+      right: 0; top: -3px;
+      width: 6px; height: 6px;
+      border-right: 1px solid currentColor;
+      border-top: 1px solid currentColor;
       transform: rotate(45deg);
     }
-    .hero-cta:hover .cta-line { width: 48px; }
+    .cta-arrow:hover .cta-arrow__line { width: 48px; }
 
-    /* ─── SECTION LABEL ─── */
+    /* ─── SECTION LABEL (horizontal rule style) ──────────────────────────── */
     .section-label {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 0;
       margin-bottom: 40px;
     }
-    .section-label-text {
-      font-family: "DM Mono", monospace;
+    .section-label__text {
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
       white-space: nowrap;
     }
-    .section-label-line {
+    .section-label__line {
       flex: 1;
       height: 1px;
       background: var(--border);
     }
-    .section-label-count {
-      font-family: "DM Mono", monospace;
+    .section-label__count {
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.10em;
       color: var(--muted);
       white-space: nowrap;
     }
 
-    /* ─── WORKS ─── */
-    .works-section {
-      max-width: 1080px;
+    /* ─── WORKS ──────────────────────────────────────────────────────────── */
+    .works {
+      max-width: var(--max-w);
       margin: 0 auto;
-      padding: 80px 40px 100px;
+      padding: 80px var(--pad-x) 100px;
     }
 
-    /* Filter tabs */
-    .filter-bar-wrap {
+    /* Filter tabs (underline style — design-system.yaml: filter_tabs) */
+    .filter-wrap {
       border-bottom: 1px solid var(--border);
       margin-bottom: 40px;
     }
@@ -218,8 +251,9 @@
       gap: 0;
     }
     .filter-btn {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--muted);
@@ -227,17 +261,16 @@
       border: none;
       border-bottom: 2px solid transparent;
       padding: 10px 18px;
-      cursor: pointer;
       margin-bottom: -1px;
       transition: color 0.2s, border-color 0.2s;
     }
     .filter-btn:hover { color: var(--text); }
-    .filter-btn.active {
+    .filter-btn[aria-pressed="true"] {
       color: var(--text);
       border-bottom-color: var(--accent);
     }
 
-    /* Works grid */
+    /* Works grid (design-system.yaml: work_card / layout.grid.works) */
     .works-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -245,34 +278,32 @@
       background: var(--border);
       border: 1px solid var(--border);
     }
-
-    .work-item {
+    .work-card {
       background: var(--bg);
       cursor: pointer;
       transition: background 0.2s;
     }
-    .work-item:hover { background: var(--bg-white); }
-    .work-item.hidden { display: none; }
+    .work-card:hover { background: var(--bg-white); }
+    .work-card[hidden] { display: none; }
 
-    .work-thumb {
+    .work-card__thumb {
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      display: block;
     }
-    .work-thumb img {
+    .work-card__thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: top center;
-      display: block;
-      transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
+      will-change: transform; /* GPU昇格でスクロール jank 防止 */
+      transition: transform 0.7s cubic-bezier(0.25,0.1,0.25,1), opacity 0.3s;
     }
-    .work-item:hover .work-thumb img {
+    .work-card:hover .work-card__thumb img {
       transform: scale(1.04);
       opacity: 0.9;
     }
 
-    .work-info {
+    .work-card__info {
       padding: 20px 24px 22px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -280,16 +311,18 @@
       justify-content: space-between;
       gap: 16px;
     }
-    .work-title {
-      font-family: "Noto Sans JP", system-ui, sans-serif;
+    .work-card__title {
+      font-family: var(--font-body);
       font-size: 13px;
       font-weight: 400;
       color: var(--text);
       letter-spacing: 0.01em;
     }
-    .work-tag {
-      font-family: "DM Mono", monospace;
+    /* Tag: square-cornered, no fill (design-system.yaml: work_card.tag) */
+    .work-card__tag {
+      font-family: var(--font-ui);
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
@@ -300,32 +333,32 @@
       flex-shrink: 0;
     }
 
-    /* ─── ABOUT ─── */
-    .about-section {
+    /* ─── ABOUT ──────────────────────────────────────────────────────────── */
+    .about {
       border-top: 1px solid var(--border);
     }
-    .about-inner {
-      max-width: 1080px;
+    .about__inner {
+      max-width: var(--max-w);
       margin: 0 auto;
-      padding: 90px 40px;
+      padding: var(--section-y) var(--pad-x);
       display: grid;
       grid-template-columns: 200px 1fr;
       gap: 80px;
       align-items: start;
     }
-    .about-sidebar {
+    .about__sidebar {
       position: sticky;
       top: 80px;
     }
-    .about-content h2 {
-      font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    .about__content h2 {
+      font-family: var(--font-display);
       font-size: clamp(1.8rem, 4vw, 3rem);
       font-weight: 400;
       line-height: 1.35;
       letter-spacing: 0.04em;
       margin-bottom: 32px;
     }
-    .about-content p {
+    .about__content p {
       font-size: 14px;
       font-weight: 300;
       color: var(--muted);
@@ -333,7 +366,9 @@
       max-width: 560px;
       margin-bottom: 16px;
     }
-    .stats-row {
+
+    /* Stats (design-system.yaml: stats) */
+    .stats {
       display: flex;
       gap: 48px;
       flex-wrap: wrap;
@@ -341,38 +376,45 @@
       padding-top: 56px;
       margin-top: 56px;
     }
-    .stat-num {
-      font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    /* [Fix] dt→dd 正順 + column-reverse で視覚を維持 (数字が上) */
+    .stat {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .stat__num {
+      font-family: var(--font-display);
       font-size: 2rem;
       font-weight: 400;
       color: var(--text);
       line-height: 1;
       margin-bottom: 6px;
     }
-    .stat-label {
-      font-family: "DM Mono", monospace;
+    .stat__label {
+      font-family: var(--font-ui);
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
-    /* ─── CONTACT ─── */
-    .contact-section {
+    /* ─── CONTACT ────────────────────────────────────────────────────────── */
+    .contact {
       background: var(--contact-bg);
     }
-    .contact-inner {
-      max-width: 1080px;
+    .contact__inner {
+      max-width: var(--max-w);
       margin: 0 auto;
-      padding: 90px 40px;
+      padding: var(--section-y) var(--pad-x);
       display: grid;
       grid-template-columns: 200px 1fr;
       gap: 80px;
       align-items: start;
     }
-    .contact-sidebar-label {
-      font-family: "DM Mono", monospace;
+    .contact__sidebar-label {
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.4);
@@ -380,8 +422,8 @@
       position: sticky;
       top: 80px;
     }
-    .contact-content h2 {
-      font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    .contact__content h2 {
+      font-family: var(--font-display);
       font-size: clamp(1.8rem, 4vw, 3rem);
       font-weight: 400;
       line-height: 1.35;
@@ -389,7 +431,12 @@
       color: var(--inv);
       margin-bottom: 48px;
     }
-    .contact-links { display: flex; flex-direction: column; }
+
+    /* Contact link rows (design-system.yaml: contact_link_row) */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+    }
     .contact-link {
       display: flex;
       align-items: center;
@@ -397,68 +444,73 @@
       padding: 20px 0;
       border-bottom: 1px solid var(--inv-border);
       text-decoration: none;
-      transition: color 0.2s, border-color 0.2s;
+      transition: color 0.2s;
     }
     .contact-link:first-child { border-top: 1px solid var(--inv-border); }
-    .contact-link-address {
-      font-family: "Noto Sans JP", system-ui, sans-serif;
+    .contact-link__address {
+      font-family: var(--font-body);
       font-size: 13px;
       font-weight: 300;
       color: var(--inv-muted);
       transition: color 0.2s;
     }
-    .contact-link-platform {
-      font-family: "DM Mono", monospace;
+    .contact-link__platform {
+      font-family: var(--font-ui);
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.2);
       transition: color 0.2s;
     }
-    .contact-link:hover .contact-link-address { color: rgba(255,255,255,0.9); }
-    .contact-link:hover .contact-link-platform { color: rgba(255,255,255,0.4); }
+    .contact-link:hover .contact-link__address { color: rgba(255,255,255,0.9); }
+    .contact-link:hover .contact-link__platform { color: rgba(255,255,255,0.4); }
 
-    /* ─── FOOTER ─── */
-    footer {
+    /* ─── FOOTER ─────────────────────────────────────────────────────────── */
+    .site-footer {
       background: var(--contact-bg);
       border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 24px 40px;
+      padding: 24px var(--pad-x);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    footer span {
-      font-family: "DM Mono", monospace;
+    .site-footer span {
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.2);
     }
 
-    /* ─── MODAL ─── */
+    /* モーダル img の CLS 防止 */
+    .modal-img { aspect-ratio: 16 / 9; object-fit: cover; }
+
+    /* ─── MODAL (design-system.yaml: modal) ──────────────────────────────── */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(250, 249, 247, 0.97);
+      background: rgba(250,249,247,0.97);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       z-index: 200;
       overflow-y: auto;
     }
-    .modal-overlay.open { display: block; }
+    .modal-overlay[aria-hidden="false"] { display: block; }
 
     .modal-close {
       position: fixed;
       top: 20px;
-      right: 40px;
-      font-family: "DM Mono", monospace;
+      right: var(--pad-x);
+      font-family: var(--font-ui);
       font-size: 10px;
+      font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       background: none;
       border: none;
-      cursor: pointer;
       z-index: 201;
       transition: color 0.2s;
     }
@@ -467,11 +519,10 @@
     .modal-inner {
       max-width: 900px;
       margin: 0 auto;
-      padding: 80px 40px 60px;
+      padding: 80px var(--pad-x) 60px;
     }
     .modal-img {
       width: 100%;
-      display: block;
       border: 1px solid var(--border);
       margin-bottom: 48px;
     }
@@ -485,7 +536,7 @@
       align-items: start;
     }
     .modal-title {
-      font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+      font-family: var(--font-display);
       font-size: clamp(1.4rem, 3vw, 2.2rem);
       font-weight: 400;
       letter-spacing: 0.04em;
@@ -501,22 +552,23 @@
     }
     .modal-meta-row:first-child { border-top: 1px solid var(--border); }
     .modal-meta-key {
-      font-family: "DM Mono", monospace;
+      font-family: var(--font-ui);
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       white-space: nowrap;
     }
     .modal-meta-val {
-      font-family: "Noto Sans JP", system-ui, sans-serif;
+      font-family: var(--font-body);
       font-size: 12px;
       font-weight: 400;
       color: var(--text);
       text-align: right;
     }
     .modal-desc {
-      font-family: "Noto Sans JP", system-ui, sans-serif;
+      font-family: var(--font-body);
       font-size: 14px;
       font-weight: 300;
       color: var(--muted);
@@ -524,419 +576,410 @@
       max-width: 560px;
     }
 
-    /* ─── RESPONSIVE ─── */
+    /* ─── RESPONSIVE ─────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .hero { padding: 100px 20px 72px; }
-      .works-section { padding: 60px 20px 80px; }
+      :root { --pad-x: 20px; }
+      .site-nav { padding: 0 var(--pad-x); }
+      .hero { padding: 100px var(--pad-x) 72px; }
+      .works { padding: 60px var(--pad-x) 80px; }
       .works-grid { grid-template-columns: 1fr; }
-      .about-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
-      .about-sidebar { position: static; }
-      .contact-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
-      .contact-sidebar-label { position: static; }
+      .about__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px var(--pad-x);
+      }
+      .about__sidebar { position: static; }
+      .contact__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px var(--pad-x);
+      }
+      .contact__sidebar-label { position: static; }
       .modal-header { grid-template-columns: 1fr; gap: 32px; }
-      .modal-inner { padding: 60px 20px 40px; }
-      footer { padding: 24px 20px; }
+      .modal-inner { padding: 60px var(--pad-x) 40px; }
     }
     @media (max-width: 480px) {
       .filter-btn { padding: 10px 12px; font-size: 9px; }
-      .stats-row { gap: 32px; }
+      .stats { gap: 32px; }
+    }
+
+    /* ─── prefers-reduced-motion ────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .work-card__thumb img,
+      .cta-arrow__line,
+      .filter-btn,
+      .contact-link,
+      .contact-link__address,
+      .contact-link__platform { transition: none; }
     }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav aria-label="Main navigation">
-  <a href="/" class="nav-logo">Portfolio</a>
-  <div class="nav-links">
-    <a href="#works">Works</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-  </div>
+<!-- ── NAV ─────────────────────────────────────────────────────────────────── -->
+<nav class="site-nav" aria-label="メインナビゲーション">
+  <a href="/" class="nav-logo" aria-label="ポートフォリオ トップへ">Portfolio</a>
+  <ul class="nav-links" role="list">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
 <main>
 
-<!-- HERO -->
-<section class="hero">
+<!-- ── HERO ────────────────────────────────────────────────────────────────── -->
+<section class="hero" aria-labelledby="hero-heading">
+  <!-- [Fix] aria-hidden 削除 — "AI × Web Development" はページ主題の補足情報 -->
   <div class="eyebrow">
     <span class="eyebrow-label">AI × Web Development</span>
   </div>
-  <h1>AI で、<br>ウェブを<br>つくる。</h1>
+  <h1 id="hero-heading">AI で、<br>ウェブを<br>つくる。</h1>
   <div class="hero-foot">
     <p class="hero-desc">
       Claude Code を活用した<br>
       ウェブ制作・LINE構築の実績集
     </p>
-    <a href="#works" class="hero-cta">
+    <a href="#works" class="cta-arrow">
       Works
-      <span class="cta-line"></span>
+      <span class="cta-arrow__line" aria-hidden="true"></span>
     </a>
   </div>
 </section>
 
-<!-- WORKS -->
-<section class="works-section" id="works">
+<!-- ── WORKS ───────────────────────────────────────────────────────────────── -->
+<section class="works" id="works" aria-labelledby="works-heading">
 
+  <!-- [Fix] role="presentation" 削除・span に role="heading" 付与 -->
   <div class="section-label">
-    <span class="section-label-text">Works</span>
-    <span class="section-label-line"></span>
-    <span class="section-label-count" id="works-count">5 projects</span>
+    <span class="section-label__text" role="heading" aria-level="2" id="works-heading">Works</span>
+    <span class="section-label__line" aria-hidden="true"></span>
+    <span class="section-label__count" aria-live="polite" aria-atomic="true" id="works-count">5 projects</span>
   </div>
 
-  <div class="filter-bar-wrap">
+  <!-- Filter tabs -->
+  <div class="filter-wrap" role="group" aria-label="作品フィルター">
     <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
-      <button class="filter-btn" data-filter="line" aria-pressed="false">LINE</button>
-      <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
-      <button class="filter-btn" data-filter="lp" aria-pressed="false">LP</button>
+      <button class="filter-btn" data-filter="all"       aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="line"      aria-pressed="false">LINE</button>
+      <button class="filter-btn" data-filter="web"       aria-pressed="false">Web</button>
+      <button class="filter-btn" data-filter="lp"        aria-pressed="false">LP</button>
       <button class="filter-btn" data-filter="portfolio" aria-pressed="false">Portfolio</button>
     </div>
   </div>
 
+  <!-- Works grid: [Fix] role="list" 削除・各カードを role="button" 単体に統一 -->
   <div class="works-grid" id="works-grid">
 
-    <div class="work-item" data-category="line" data-modal="line" tabindex="0" role="button" aria-label="LINE事業者構築の詳細を見る">
-      <div class="work-thumb">
-        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築" loading="eager" decoding="async" fetchpriority="high">
+    <article class="work-card" data-category="line" data-modal="line"
+      role="button" tabindex="0" aria-label="LINE事業者構築 — 詳細を見る">
+      <div class="work-card__thumb" aria-hidden="true">
+        <img src="images/01_LINE構築実績.png" alt="LINE事業者構築の制作実績"
+          width="540" height="304" loading="eager" decoding="sync" fetchpriority="high">
       </div>
-      <div class="work-info">
-        <span class="work-title">LINE事業者構築</span>
-        <span class="work-tag">LINE</span>
+      <div class="work-card__info">
+        <span class="work-card__title">LINE事業者構築</span>
+        <span class="work-card__tag">LINE</span>
       </div>
-    </div>
+    </article>
 
-    <div class="work-item" data-category="web" data-modal="coaching" tabindex="0" role="button" aria-label="コーチング HP制作の詳細を見る">
-      <div class="work-thumb">
-        <img src="images/02_HP制作実績_コーチング.png" alt="コーチング HP制作" loading="lazy">
+    <article class="work-card" data-category="web" data-modal="coaching"
+      role="button" tabindex="0" aria-label="コーチング HP制作 — 詳細を見る">
+      <div class="work-card__thumb" aria-hidden="true">
+        <img src="images/02_HP制作実績_コーチング.png" alt="コーチングサービスのHP制作実績"
+          width="540" height="304" loading="lazy" decoding="async">
       </div>
-      <div class="work-info">
-        <span class="work-title">コーチング HP制作</span>
-        <span class="work-tag">Web</span>
+      <div class="work-card__info">
+        <span class="work-card__title">コーチング HP制作</span>
+        <span class="work-card__tag">Web</span>
       </div>
-    </div>
+    </article>
 
-    <div class="work-item" data-category="lp" data-modal="lp" tabindex="0" role="button" aria-label="LP制作の詳細を見る">
-      <div class="work-thumb">
-        <img src="images/03_LP制作実績.png" alt="LP制作" loading="lazy">
+    <article class="work-card" data-category="lp" data-modal="lp"
+      role="button" tabindex="0" aria-label="LP制作 — 詳細を見る">
+      <div class="work-card__thumb" aria-hidden="true">
+        <img src="images/03_LP制作実績.png" alt="LP制作実績"
+          width="540" height="304" loading="lazy" decoding="async">
       </div>
-      <div class="work-info">
-        <span class="work-title">LP制作</span>
-        <span class="work-tag">LP</span>
+      <div class="work-card__info">
+        <span class="work-card__title">LP制作</span>
+        <span class="work-card__tag">LP</span>
       </div>
-    </div>
+    </article>
 
-    <div class="work-item" data-category="web" data-modal="cafe" tabindex="0" role="button" aria-label="カフェ HP制作の詳細を見る">
-      <div class="work-thumb">
-        <img src="images/04_HP制作実績_カフェ.png" alt="カフェ HP制作" loading="lazy">
+    <article class="work-card" data-category="web" data-modal="cafe"
+      role="button" tabindex="0" aria-label="カフェ HP制作 — 詳細を見る">
+      <div class="work-card__thumb" aria-hidden="true">
+        <img src="images/04_HP制作実績_カフェ.png" alt="カフェのHP制作実績"
+          width="540" height="304" loading="lazy" decoding="async">
       </div>
-      <div class="work-info">
-        <span class="work-title">カフェ HP制作</span>
-        <span class="work-tag">Web</span>
+      <div class="work-card__info">
+        <span class="work-card__title">カフェ HP制作</span>
+        <span class="work-card__tag">Web</span>
       </div>
-    </div>
+    </article>
 
-    <div class="work-item" data-category="portfolio" data-modal="portfolio" tabindex="0" role="button" aria-label="ポートフォリオサイトの詳細を見る">
-      <div class="work-thumb">
-        <img src="images/05_PORTFOLIO.png" alt="ポートフォリオサイト" loading="lazy">
+    <article class="work-card" data-category="portfolio" data-modal="portfolio"
+      role="button" tabindex="0" aria-label="ポートフォリオサイト — 詳細を見る">
+      <div class="work-card__thumb" aria-hidden="true">
+        <img src="images/05_PORTFOLIO.png" alt="ポートフォリオサイトの制作実績"
+          width="540" height="304" loading="lazy" decoding="async">
       </div>
-      <div class="work-info">
-        <span class="work-title">ポートフォリオサイト</span>
-        <span class="work-tag">Portfolio</span>
+      <div class="work-card__info">
+        <span class="work-card__title">ポートフォリオサイト</span>
+        <span class="work-card__tag">Portfolio</span>
       </div>
-    </div>
+    </article>
 
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="about-section" id="about">
-  <div class="about-inner">
-    <div class="about-sidebar">
+<!-- ── ABOUT ────────────────────────────────────────────────────────────────── -->
+<section class="about" id="about" aria-labelledby="about-heading">
+  <div class="about__inner">
+    <div class="about__sidebar" aria-hidden="true">
       <div class="eyebrow">
         <span class="eyebrow-label">About</span>
       </div>
     </div>
-    <div class="about-content">
-      <h2>Claude Code で、<br>本格的なウェブを<br>量産する。</h2>
+    <div class="about__content">
+      <h2 id="about-heading">
+        Claude Code で、<br>本格的なウェブを<br>量産する。
+      </h2>
       <p>
-        Claude Code を使い、企画からコーディング・公開まで一気通貫で対応。LINEの公式アカウント構築から企業HP、LPまで幅広く制作しています。
+        Claude Code を使い、企画からコーディング・公開まで一気通貫で対応。
+        LINEの公式アカウント構築から企業HP、LPまで幅広く制作しています。
       </p>
       <p>
-        AIとの協働で制作スピードを高めながら、デザインの質とビジネス目標への整合を大切にしています。
+        AIとの協働で制作スピードを高めながら、デザインの質と
+        ビジネス目標への整合を大切にしています。
       </p>
-      <div class="stats-row">
-        <div class="stat-item">
-          <div class="stat-num">5+</div>
-          <div class="stat-label">案件</div>
+      <dl class="stats">
+        <div class="stat">
+          <dt class="stat__label">案件</dt>
+          <dd class="stat__num">5+</dd>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">AI</div>
-          <div class="stat-label">Claude Code</div>
+        <div class="stat">
+          <dt class="stat__label">ツール</dt>
+          <dd class="stat__num">AI</dd>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">2025</div>
-          <div class="stat-label">スタート</div>
+        <div class="stat">
+          <dt class="stat__label">スタート</dt>
+          <dd class="stat__num">2025</dd>
         </div>
-      </div>
+      </dl>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <div class="contact-inner">
-    <div class="contact-sidebar-label">Contact</div>
-    <div class="contact-content">
-      <h2>一緒に<br>つくりましょう。</h2>
-      <div class="contact-links">
+<!-- ── CONTACT ──────────────────────────────────────────────────────────────── -->
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="contact__inner">
+    <div>
+      <!-- [Fix] <p> → <div> (p に aria-hidden は AT によって無視される場合がある) -->
+      <div class="contact__sidebar-label" aria-hidden="true">Contact</div>
+    </div>
+    <div class="contact__content">
+      <h2 id="contact-heading">一緒に<br>つくりましょう。</h2>
+      <!-- [Fix] <nav> 単一リンク → <address> (連絡先情報の意味論要素) -->
+      <address class="contact-links">
         <a href="mailto:mami.tanemori@gmail.com" class="contact-link">
-          <span class="contact-link-address">mami.tanemori@gmail.com</span>
-          <span class="contact-link-platform">Email →</span>
+          <span class="contact-link__address">mami.tanemori@gmail.com</span>
+          <span class="contact-link__platform" aria-hidden="true">Email →</span>
         </a>
-      </div>
+      </address>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- FOOTER -->
-<footer>
+<!-- ── FOOTER ───────────────────────────────────────────────────────────────── -->
+<footer class="site-footer">
   <span>© 2025 Portfolio</span>
   <span>Claude Code</span>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="handleOverlayClick(event)">
-  <button class="modal-close" onclick="closeModal()" aria-label="閉じる">Close ×</button>
+<!-- ── MODAL ────────────────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay"
+  role="dialog" aria-modal="true" aria-hidden="true"
+  aria-labelledby="modal-title">
+  <button class="modal-close" id="modal-close" aria-label="閉じる">Close ×</button>
   <div class="modal-inner" id="modal-inner"></div>
 </div>
 
 <script>
-  // ─── 型定義 (JSDoc) ────────────────────────────────────────────────────────
-  /**
-   * @typedef {Object} Project
-   * @property {string} img      - 画像パス
-   * @property {string} title    - 案件名
-   * @property {string} category - カテゴリ
-   * @property {string} year     - 制作年
-   * @property {string} tech     - 使用技術
-   * @property {string} desc     - 説明文
-   */
+  "use strict";
 
-  // ─── 定数 ─────────────────────────────────────────────────────────────────
-  /** @type {Record<string, Project>} */
-  const PROJECTS = {
+  /* ── データ定義 ─────────────────────────────────────────────────────────── */
+  /**
+   * @typedef {{ img:string, title:string, category:string, year:string, tech:string, desc:string }} Project
+   * @type {Readonly<Record<string, Project>>}
+   */
+  const PROJECTS = Object.freeze({
     line: {
-      img:      'images/01_LINE構築実績.png',
-      title:    'LINE事業者構築',
-      category: 'LINE',
-      year:     '2025',
-      tech:     'Claude Code / LINE Messaging API',
-      desc:     'Claude Codeを活用してLINE公式アカウントのリッチメニュー設計・自動応答フロー・Webhook連携を構築。企業のLINE運用基盤を短期間で立ち上げました。',
+      img:      "images/01_LINE構築実績.png",
+      title:    "LINE事業者構築",
+      category: "LINE",
+      year:     "2025",
+      tech:     "Claude Code / LINE Messaging API",
+      desc:     "Claude Codeを活用してLINE公式アカウントのリッチメニュー設計・自動応答フロー・Webhook連携を構築。企業のLINE運用基盤を短期間で立ち上げました。",
     },
     coaching: {
-      img:      'images/02_HP制作実績_コーチング.png',
-      title:    'コーチング HP制作',
-      category: 'Web',
-      year:     '2025',
-      tech:     'Claude Code / HTML / CSS',
-      desc:     'コーチングサービスの集客に特化したホームページ。ファーストビューからCVまでの導線設計をAIと協働で最適化し、モバイルファーストで制作しました。',
+      img:      "images/02_HP制作実績_コーチング.png",
+      title:    "コーチング HP制作",
+      category: "Web",
+      year:     "2025",
+      tech:     "Claude Code / HTML / CSS",
+      desc:     "コーチングサービスの集客に特化したホームページ。ファーストビューからCVまでの導線設計をAIと協働で最適化し、モバイルファーストで制作しました。",
     },
     lp: {
-      img:      'images/03_LP制作実績.png',
-      title:    'LP制作',
-      category: 'LP',
-      year:     '2025',
-      tech:     'Claude Code / HTML / CSS',
-      desc:     '単一スクロールで完結するランディングページ。コンバージョンを意識したコピーとレイアウトをClaude Codeで高速に実装しました。',
+      img:      "images/03_LP制作実績.png",
+      title:    "LP制作",
+      category: "LP",
+      year:     "2025",
+      tech:     "Claude Code / HTML / CSS",
+      desc:     "単一スクロールで完結するランディングページ。コンバージョンを意識したコピーとレイアウトをClaude Codeで高速に実装しました。",
     },
     cafe: {
-      img:      'images/04_HP制作実績_カフェ.png',
-      title:    'カフェ HP制作',
-      category: 'Web',
-      year:     '2025',
-      tech:     'Claude Code / HTML / CSS',
-      desc:     'カフェの雰囲気と世界観を大切にした店舗ホームページ。メニュー・アクセス・予約情報を温かみのあるデザインで構成しました。',
+      img:      "images/04_HP制作実績_カフェ.png",
+      title:    "カフェ HP制作",
+      category: "Web",
+      year:     "2025",
+      tech:     "Claude Code / HTML / CSS",
+      desc:     "カフェの雰囲気と世界観を大切にした店舗ホームページ。メニュー・アクセス・予約情報を温かみのあるデザインで構成しました。",
     },
     portfolio: {
-      img:      'images/05_PORTFOLIO.png',
-      title:    'ポートフォリオサイト',
-      category: 'Portfolio',
-      year:     '2025',
-      tech:     'Claude Code / HTML / CSS',
-      desc:     'このポートフォリオサイト自体もClaude Codeで制作。デザインシステムYAMLを定義し、エージェントが実装する新しいワークフローを実践しました。',
+      img:      "images/05_PORTFOLIO.png",
+      title:    "ポートフォリオサイト",
+      category: "Portfolio",
+      year:     "2025",
+      tech:     "Claude Code / HTML / CSS",
+      desc:     "このポートフォリオサイト自体もClaude Codeで制作。デザインシステムYAMLを定義し、エージェントが実装する新しいワークフローを実践しました。",
     },
-  };
+  });
 
-  // ─── セキュリティ: XSS対策ユーティリティ ─────────────────────────────────
-  /**
-   * 文字列をテキストノードとして安全に設定する
-   * innerHTML への直接挿入を禁止し、必ずこの関数を経由させる
-   * @param {HTMLElement} el
-   * @param {string} text
-   */
-  function setText(el, text) {
-    el.textContent = text;
+  /* ── XSS対策: DOM構築ユーティリティ ───────────────────────────────────── */
+  /** @param {string} tag @param {Record<string,string>} [attrs] @returns {HTMLElement} */
+  function el(tag, attrs = {}) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    return node;
   }
+  /** @param {HTMLElement} node @param {string} text */
+  function setText(node, text) { node.textContent = text; }
 
-  /**
-   * 属性値を安全にセットする (setAttribute は自動エスケープ済み)
-   * @param {HTMLElement} el
-   * @param {string} attr
-   * @param {string} value
-   */
-  function setAttr(el, attr, value) {
-    el.setAttribute(attr, value);
-  }
-
-  // ─── DOM構築: モーダルコンテンツ (単一責任) ──────────────────────────────
-  /**
-   * Project データから モーダル内 DOM ツリーを安全に構築して返す
-   * innerHTML を一切使わず createElement + textContent/setAttribute のみ使用
-   * @param {Project} p
-   * @returns {DocumentFragment}
-   */
-  function buildModalDOM(p) {
+  /* ── モーダル DOM 構築 ──────────────────────────────────────────────────── */
+  /** @param {Project} p @returns {DocumentFragment} */
+  function buildModal(p) {
     const frag = document.createDocumentFragment();
 
-    const img = document.createElement('img');
-    setAttr(img, 'src', p.img);
-    setAttr(img, 'alt', p.title);
-    setAttr(img, 'class', 'modal-img');
+    /* [Fix] width/height 付与で CLS 防止 (aspect-ratio は CSS で補完) */
+    const img = el("img", { src: p.img, alt: p.title, class: "modal-img", width: "900", height: "506" });
     frag.appendChild(img);
 
-    const header = document.createElement('div');
-    setAttr(header, 'class', 'modal-header');
+    const header = el("div", { class: "modal-header" });
 
-    const h2 = document.createElement('h2');
-    setAttr(h2, 'class', 'modal-title');
-    setAttr(h2, 'id', 'modal-title');
+    const h2 = el("h2", { class: "modal-title", id: "modal-title" });
     setText(h2, p.title);
     header.appendChild(h2);
 
-    const meta = document.createElement('div');
-    setAttr(meta, 'class', 'modal-meta');
-
-    /** @type {Array<[string, string]>} */
-    const metaRows = [
-      ['Category', p.category],
-      ['Year',     p.year],
-      ['Tech',     p.tech],
-    ];
-    metaRows.forEach(([key, val]) => {
-      const row  = document.createElement('div');
-      setAttr(row, 'class', 'modal-meta-row');
-      const keyEl = document.createElement('span');
-      setAttr(keyEl, 'class', 'modal-meta-key');
-      setText(keyEl, key);
-      const valEl = document.createElement('span');
-      setAttr(valEl, 'class', 'modal-meta-val');
-      setText(valEl, val);
+    const meta = el("div", { class: "modal-meta" });
+    for (const [key, val] of [["Category", p.category], ["Year", p.year], ["Tech", p.tech]]) {
+      const row  = el("div", { class: "modal-meta-row" });
+      const keyEl = el("span", { class: "modal-meta-key" }); setText(keyEl, key);
+      const valEl = el("span", { class: "modal-meta-val" }); setText(valEl, val);
       row.appendChild(keyEl);
       row.appendChild(valEl);
       meta.appendChild(row);
-    });
-
+    }
     header.appendChild(meta);
     frag.appendChild(header);
 
-    const desc = document.createElement('p');
-    setAttr(desc, 'class', 'modal-desc');
-    setText(desc, p.desc);
+    const desc = el("p", { class: "modal-desc" }); setText(desc, p.desc);
     frag.appendChild(desc);
 
     return frag;
   }
 
-  // ─── モーダル状態管理 (単一責任) ─────────────────────────────────────────
+  /* ── モーダル状態管理 ───────────────────────────────────────────────────── */
+  const overlay  = document.getElementById("modal-overlay");
+  const inner    = document.getElementById("modal-inner");
+  const closeBtn = document.getElementById("modal-close");
   /** @type {Element|null} */
-  let _lastFocused = null;
+  let _trigger = null;
 
-  /**
-   * モーダルの表示/非表示とスクロールロックを制御する
-   * @param {boolean} open
-   */
-  function setModalVisibility(open) {
-    const overlay = document.getElementById('modal-overlay');
-    overlay.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-
-  /**
-   * フォーカスをモーダル開閉に合わせて移動する
-   * @param {boolean} open
-   * @param {Element|null} [triggerEl]
-   */
-  function manageFocus(open, triggerEl) {
-    if (open) {
-      _lastFocused = triggerEl || document.activeElement;
-      document.querySelector('.modal-close')?.focus();
-    } else {
-      if (_lastFocused instanceof HTMLElement) _lastFocused.focus();
-      _lastFocused = null;
-    }
-  }
-
-  // ─── 公開API ──────────────────────────────────────────────────────────────
-  /**
-   * @param {string} key       - PROJECTS のキー
-   * @param {Element|null} triggerEl - モーダルを開いた要素（閉時にフォーカス戻し用）
-   */
   function openModal(key, triggerEl) {
-    const project = PROJECTS[key];
-    if (!project) return;
-
-    const inner = document.getElementById('modal-inner');
-    inner.replaceChildren(buildModalDOM(project));
-    setModalVisibility(true);
-    manageFocus(true, triggerEl);
+    const p = PROJECTS[key];
+    if (!p) return;
+    inner.replaceChildren(buildModal(p));
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    _trigger = triggerEl;
+    closeBtn.focus();
   }
 
   function closeModal() {
-    setModalVisibility(false);
-    manageFocus(false);
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (_trigger instanceof HTMLElement) _trigger.focus();
+    _trigger = null;
   }
 
-  // ─── イベントバインド ─────────────────────────────────────────────────────
-  function handleOverlayClick(e) {
-    if (e.target === e.currentTarget) closeModal();
-  }
+  /* overlay 背景クリックで閉じる */
+  overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+  closeBtn.addEventListener("click", closeModal);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
+  /* ── [Fix] フォーカストラップ ─────────────────────────────────────────────
+     モーダルが開いている間、Tab/Shift+Tab をモーダル内要素でサイクルさせる */
+  overlay.addEventListener("keydown", e => {
+    if (e.key !== "Tab" || overlay.getAttribute("aria-hidden") === "true") return;
+    const focusable = [...overlay.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )].filter(node => !node.hasAttribute("disabled") && !node.closest("[aria-hidden='true']"));
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
   });
 
-  document.querySelectorAll('.work-item').forEach(item => {
-    item.addEventListener('click', () => openModal(item.dataset.modal, item));
-    item.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
+  /* ── ワークカード イベント ───────────────────────────────────────────────── */
+  document.querySelectorAll(".work-card").forEach(card => {
+    card.addEventListener("click", () => openModal(card.dataset.modal, card));
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        openModal(item.dataset.modal, item);
+        openModal(card.dataset.modal, card);
       }
     });
   });
 
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
+  /* ── フィルター ─────────────────────────────────────────────────────────── */
+  const countEl = document.getElementById("works-count");
+
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      /* active 切り替え */
+      document.querySelectorAll(".filter-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
 
       const filter = btn.dataset.filter;
       let visible = 0;
-      document.querySelectorAll('.work-item').forEach(item => {
-        const match = filter === 'all' || item.dataset.category === filter;
-        item.classList.toggle('hidden', !match);
+
+      document.querySelectorAll(".work-card").forEach(card => {
+        const match = filter === "all" || card.dataset.category === filter;
+        /* hidden 属性を使用（display:none より意味論的） */
+        match ? card.removeAttribute("hidden") : card.setAttribute("hidden", "");
         if (match) visible++;
       });
-      document.getElementById('works-count').textContent =
-        `${visible} project${visible !== 1 ? 's' : ''}`;
+
+      setText(countEl, `${visible} project${visible !== 1 ? "s" : ""}`);
     });
   });
 </script>
